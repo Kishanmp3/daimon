@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+	"text/template"
 
 	"github.com/spf13/cobra"
 
@@ -116,6 +117,143 @@ var summonCmd = &cobra.Command{
 		fmt.Println(hr)
 		return nil
 	},
+}
+
+// registerAutoStart registers the daemon as a login startup item for the current OS.
+func registerAutoStart(exe string) error {
+	switch runtime.GOOS {
+	case "windows":
+		return registerWindows(exe)
+	case "darwin":
+		return registerMac(exe)
+	case "linux":
+		return registerLinux(exe)
+	default:
+		return fmt.Errorf(
+			"auto-start not supported on %s — add 'daimon daemon &' to your shell startup file (.bashrc / .zshrc)",
+			runtime.GOOS,
+		)
+	}
+}
+
+// registerWindows writes a REG_SZ value to the current-user Run key so that
+// `daimon daemon` starts on login. Uses reg.exe which requires no elevation.
+func registerWindows(exe string) error {
+	value := fmt.Sprintf(`"%s" daemon`, exe)
+	out, err := exec.Command(
+		"reg", "add",
+		`HKCU\Software\Microsoft\Windows\CurrentVersion\Run`,
+		"/v", "daimon",
+		"/t", "REG_SZ",
+		"/d", value,
+		"/f",
+	).CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("reg add: %v — %s", err, strings.TrimSpace(string(out)))
+	}
+	return nil
+}
+
+// registerMac writes a launchd plist and loads it so the daemon runs at login.
+func registerMac(exe string) error {
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return err
+	}
+
+	agentsDir := filepath.Join(home, "Library", "LaunchAgents")
+	if err := os.MkdirAll(agentsDir, 0o755); err != nil {
+		return err
+	}
+
+	plistPath := filepath.Join(agentsDir, "com.daimon.daemon.plist")
+
+	const plistTmpl = `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.daimon.daemon</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>{{.Exe}}</string>
+        <string>daemon</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <false/>
+    <key>StandardOutPath</key>
+    <string>{{.LogDir}}/daimon.log</string>
+    <key>StandardErrorPath</key>
+    <string>{{.LogDir}}/daimon.log</string>
+</dict>
+</plist>
+`
+	t := template.Must(template.New("plist").Parse(plistTmpl))
+
+	f, err := os.Create(plistPath)
+	if err != nil {
+		return err
+	}
+	if err := t.Execute(f, map[string]string{
+		"Exe":    exe,
+		"LogDir": db.DataDir(),
+	}); err != nil {
+		f.Close()
+		return err
+	}
+	f.Close()
+
+	// Load the agent (errors here are non-fatal — it will load on next login anyway).
+	_ = exec.Command("launchctl", "load", "-w", plistPath).Run()
+	return nil
+}
+
+// registerLinux creates a systemd user service and enables it.
+func registerLinux(exe string) error {
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return err
+	}
+
+	serviceDir := filepath.Join(home, ".config", "systemd", "user")
+	if err := os.MkdirAll(serviceDir, 0o755); err != nil {
+		return err
+	}
+
+	servicePath := filepath.Join(serviceDir, "daimon.service")
+
+	const serviceTmpl = `[Unit]
+Description=daimon coding session tracker
+After=network.target
+
+[Service]
+Type=simple
+ExecStart={{.Exe}} daemon
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target
+`
+	t := template.Must(template.New("service").Parse(serviceTmpl))
+
+	f, err := os.Create(servicePath)
+	if err != nil {
+		return err
+	}
+	if err := t.Execute(f, map[string]string{"Exe": exe}); err != nil {
+		f.Close()
+		return err
+	}
+	f.Close()
+
+	_ = exec.Command("systemctl", "--user", "daemon-reload").Run()
+	if err := exec.Command("systemctl", "--user", "enable", "--now", "daimon").Run(); err != nil {
+		return fmt.Errorf("systemctl enable: %w (service file written to %s)", err, servicePath)
+	}
+	return nil
 }
 
 // ──────────────────────────────────────────────────────────────────
