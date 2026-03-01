@@ -1,0 +1,17 @@
+# Binaries
+*.exe
+daimon
+breaklog
+
+# Web
+web/node_modules/
+web/dist/
+
+# Database
+*.db
+
+# Environment
+.env
+
+# Build output
+dist/
