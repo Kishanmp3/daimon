@@ -1,0 +1,103 @@
+.sidebar {
+  width: 220px;
+  min-width: 220px;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+}
+
+.brand {
+  padding: 22px 20px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.brandName {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.brandSub {
+  display: block;
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+  letter-spacing: 0.01em;
+}
+
+.nav {
+  flex: 1;
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 450;
+  transition: color 100ms, background 100ms;
+  border-left: 2px solid transparent;
+}
+
+.navItem:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.navItem.active {
+  color: var(--text-primary);
+  background: rgba(245, 158, 11, 0.06);
+  border-left-color: var(--accent);
+}
+
+.statusRow {
+  padding: 14px 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dotGreen {
+  background: #22c55e;
+  animation: dotPulse 2s ease-in-out infinite;
+}
+
+.dotGray {
+  background: var(--text-secondary);
+  opacity: 0.5;
+}
+
+@keyframes dotPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.45); }
+  50%       { box-shadow: 0 0 0 5px rgba(34, 197, 94, 0);  }
+}
+
+.statusText {
+  font-size: 12px;
+  color: var(--text-secondary);
+}

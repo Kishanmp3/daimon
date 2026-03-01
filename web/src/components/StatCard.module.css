@@ -1,0 +1,41 @@
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  animation: fadeUp 220ms ease-out both;
+  transition: border-color 150ms;
+}
+
+.card:hover {
+  border-color: #3f3f46;
+}
+
+.label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.value {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.highlight .value {
+  color: var(--accent);
+  text-shadow: 0 0 20px var(--accent-glow);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}

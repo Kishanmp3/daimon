@@ -1,0 +1,562 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  padding: var(--padding);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Filter bar ────────────────────────────────────────────────────── */
+
+.filterBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.select {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-family: inherit;
+  padding: 7px 10px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 150ms;
+}
+
+.select:hover, .select:focus { border-color: #3f3f46; }
+
+.rangeGroup {
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.rangeBtn {
+  background: var(--card-bg);
+  border: none;
+  border-right: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-family: inherit;
+  padding: 7px 13px;
+  cursor: pointer;
+  transition: background 120ms, color 120ms;
+}
+
+.rangeBtn:last-child { border-right: none; }
+.rangeBtn:hover { background: rgba(255,255,255,0.04); color: var(--text-primary); }
+.rangeBtnActive { background: rgba(245,158,11,0.1); color: var(--accent); }
+
+.search {
+  flex: 1;
+  min-width: 180px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-family: inherit;
+  padding: 7px 12px;
+  outline: none;
+  transition: border-color 150ms;
+}
+
+.search::placeholder { color: var(--text-secondary); }
+.search:focus { border-color: rgba(245,158,11,0.4); }
+
+/* ── Mini heatmap ──────────────────────────────────────────────────── */
+
+.miniHeatWrap {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  max-height: 160px;
+  overflow: hidden;
+}
+
+.miniHeatLabel {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+
+.miniHeatLabel strong { color: var(--text-primary); }
+
+.clearDay {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 11px;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.miniHeat { overflow-x: auto; }
+
+/* ── Empty ─────────────────────────────────────────────────────────── */
+
+.empty {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  padding: 12px 0;
+}
+
+.empty code { color: var(--accent); font-size: 12px; }
+
+/* ── Collapsed cards ───────────────────────────────────────────────── */
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sessionCard {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  animation: fadeUp 200ms ease-out var(--delay, 0ms) both;
+  transition: border-color 150ms, background 150ms;
+  outline: none;
+}
+
+.sessionCard:hover {
+  border-color: #3f3f46;
+  background: #1c1c1f;
+}
+
+.sessionCard:focus-visible {
+  border-color: rgba(245,158,11,0.5);
+}
+
+/* Row 1 */
+.cardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cardTopLeft {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.projName {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.headline {
+  font-size: 13px;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cardBadges {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* Row 2: date */
+.cardDate {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+/* Row 3: diff */
+.cardDiff {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 2px;
+}
+
+.diffBar {
+  display: flex;
+  height: 4px;
+  border-radius: 2px;
+  overflow: hidden;
+  background: var(--border);
+  gap: 2px;
+  flex: 1;
+  max-width: 200px;
+}
+
+.diffAdded  { background: #22c55e; border-radius: 2px 0 0 2px; min-width: 2px; }
+.diffRemoved { background: #ef4444; border-radius: 0 2px 2px 0; min-width: 2px; }
+
+.diffLabels { display: flex; gap: 10px; }
+.diffAdd { font-size: 11px; color: #22c55e; }
+.diffRem { font-size: 11px; color: #ef4444; }
+
+/* Badges (shared) */
+.badge {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.06);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+.badgeActive {
+  background: rgba(245,158,11,0.1);
+  color: var(--accent);
+  border-color: rgba(245,158,11,0.2);
+}
+
+.badgeClosed {
+  background: rgba(255,255,255,0.04);
+  color: var(--text-secondary);
+}
+
+/* ── Modal overlay ─────────────────────────────────────────────────── */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: overlayIn 150ms ease-out;
+}
+
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.modal {
+  background: #111113;
+  border: 1px solid #2e2e32;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 720px;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  padding: 28px;
+  animation: modalIn 180ms ease-out;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.99); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.closeBtn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 120ms, color 120ms;
+}
+
+.closeBtn:hover { background: rgba(255,255,255,0.1); color: var(--text-primary); }
+
+/* Modal header */
+.modalHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding-right: 36px;
+}
+
+.modalHeaderLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.modalProject {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.modalDate {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.modalBadges {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.modalDivider {
+  height: 1px;
+  background: var(--border);
+  margin: 18px 0;
+}
+
+/* Modal body — two columns */
+.modalBody {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+.modalLeft,
+.modalRight {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* Sections */
+.section {}
+
+.sectionTitle {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+
+/* Diff in modal */
+.diffBar {
+  display: flex;
+  height: 6px;
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--border);
+  gap: 2px;
+}
+
+.diffLabels {
+  display: flex;
+  gap: 14px;
+  margin-top: 6px;
+}
+
+/* File chips */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.chip {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.04);
+  color: var(--chip-color, var(--text-secondary));
+  border: 1px solid rgba(255,255,255,0.07);
+  font-family: 'SF Mono','Fira Code',monospace;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chipMore { color: var(--text-secondary); font-family: inherit; }
+
+/* Sparkline */
+.sparkWrap {}
+.sparkNote {
+  font-size: 10px;
+  color: var(--text-secondary);
+  opacity: 0.6;
+  margin-top: 4px;
+}
+
+/* Work type bars */
+.workTypes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.workRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.workLabel {
+  font-size: 12px;
+  color: var(--text-secondary);
+  width: 70px;
+  flex-shrink: 0;
+}
+
+.workTrack {
+  flex: 1;
+  height: 5px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.workFill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 600ms ease-out;
+}
+
+.workPct {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-primary);
+  width: 30px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* Language chart */
+.langChartWrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.langLegend {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.langRow {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.langDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.langName {
+  font-size: 12px;
+  color: var(--text-secondary);
+  flex: 1;
+}
+
+.langPct {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.langTip {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 5px 9px;
+  font-size: 12px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Timeline */
+.timelineSection {
+  margin-top: 24px;
+  padding-top: 22px;
+  border-top: 1px solid var(--border);
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.timelineItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.timelineLeft {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.timelineIcon {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.timelineLine {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+  margin: 3px 0;
+}
+
+.timelineText {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  padding: 4px 0;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

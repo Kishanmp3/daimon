@@ -1,0 +1,18 @@
+.wrap {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.svg {
+  display: block;
+}
+
+.monthLabel {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  fill: var(--text-secondary);
+}
+
+.lit {
+  filter: drop-shadow(0 0 3px rgba(245, 158, 11, 0.35));
+}

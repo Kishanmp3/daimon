@@ -1,0 +1,250 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  padding: var(--padding);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Grid — 2 columns, wraps naturally ────────────────────────────── */
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+/* ── Cards ─────────────────────────────────────────────────────────── */
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px 14px;
+  animation: fadeUp 220ms ease-out var(--delay, 0ms) both;
+  transition: border-color 150ms;
+}
+
+.card:hover { border-color: #3f3f46; }
+
+.cardTitle {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 2px;
+}
+
+.cardSub {
+  font-size: 11px;
+  color: var(--text-secondary);
+  opacity: 0.7;
+  margin-bottom: 14px;
+}
+
+.empty {
+  font-size: 13px;
+  color: var(--text-secondary);
+  padding: 24px 0;
+}
+
+/* ── Tooltip ───────────────────────────────────────────────────────── */
+
+.tooltip {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 6px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ttLabel { font-size: 11px; color: var(--text-secondary); }
+.ttVal   { font-size: 13px; font-weight: 600; color: var(--accent); }
+
+/* ── Donut + legend ────────────────────────────────────────────────── */
+
+.donutWrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 100px;
+  flex-shrink: 0;
+}
+
+.legendRow { display: flex; align-items: center; gap: 7px; }
+
+.legendDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.legendName {
+  font-size: 12px;
+  color: var(--text-secondary);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.legendVal {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+  flex-shrink: 0;
+}
+
+/* ── Streaks ───────────────────────────────────────────────────────── */
+
+.streakList { display: flex; flex-direction: column; margin-top: 4px; }
+
+.divider { height: 1px; background: var(--border); }
+
+.streakItem {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+}
+
+.streakNum {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  line-height: 1;
+  width: 48px;
+  flex-shrink: 0;
+}
+
+.streakMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.streakLabel { font-size: 13px; color: var(--text-secondary); }
+.streakUnit  { font-size: 10px; color: var(--text-secondary); opacity: 0.5; }
+
+/* ── Work type bars ────────────────────────────────────────────────── */
+
+.workTypes {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.workRow { display: flex; align-items: center; gap: 10px; }
+
+.workLabel {
+  font-size: 12px;
+  color: var(--text-secondary);
+  width: 72px;
+  flex-shrink: 0;
+}
+
+.workTrack {
+  flex: 1;
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.workFill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 700ms ease-out;
+}
+
+.workPct {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-primary);
+  width: 32px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ── Narrative card ────────────────────────────────────────────────── */
+
+.narrativeCard {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  animation: fadeUp 220ms ease-out var(--delay, 0ms) both;
+  transition: border-color 150ms;
+}
+
+.narrativeCard:hover {
+  border-color: #3f3f46;
+  border-left-color: var(--accent);
+}
+
+.narrativeHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.regenBtn {
+  background: rgba(245,158,11,0.08);
+  border: 1px solid rgba(245,158,11,0.25);
+  border-radius: var(--radius);
+  color: var(--accent);
+  font-size: 12px;
+  font-family: inherit;
+  font-weight: 500;
+  padding: 6px 14px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 150ms, border-color 150ms;
+}
+
+.regenBtn:hover:not(:disabled) {
+  background: rgba(245,158,11,0.14);
+  border-color: rgba(245,158,11,0.4);
+}
+
+.regenBtn:disabled { opacity: 0.5; cursor: default; }
+
+.narrativeBody { min-height: 48px; }
+
+.narrativeText {
+  font-size: 14px;
+  color: var(--text-primary);
+  line-height: 1.75;
+  max-width: 80ch;
+}
+
+.loading {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
